@@ -1,0 +1,2129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VendaFácil — Controle suas vendas e descubra seu lucro real</title>
+  <meta name="description" content="Pare de vender no escuro. O VendaFácil organiza suas vendas, mostra seu lucro real e te dá controle financeiro total — direto no celular." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary:    #0d0d0f;
+      --bg-secondary:  #141417;
+      --bg-card:       #1a1a1f;
+      --bg-card-hover: #1f1f26;
+      --border:        #2a2a35;
+      --border-light:  #333340;
+      --yellow:        #f5c518;
+      --yellow-dark:   #d4a800;
+      --yellow-light:  #ffd740;
+      --yellow-glow:   rgba(245, 197, 24, 0.15);
+      --yellow-glow2:  rgba(245, 197, 24, 0.08);
+      --text-primary:  #f0f0f5;
+      --text-secondary:#a0a0b0;
+      --text-muted:    #606070;
+      --green:         #22c55e;
+      --red:           #ef4444;
+      --radius-sm:     8px;
+      --radius-md:     12px;
+      --radius-lg:     20px;
+      --radius-xl:     28px;
+      --shadow-card:   0 4px 24px rgba(0,0,0,0.4);
+      --shadow-glow:   0 0 40px rgba(245,197,24,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== UTILITIES ===== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    .container-sm { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--yellow-glow); border: 1px solid rgba(245,197,24,0.3);
+      color: var(--yellow); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 100px;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: linear-gradient(135deg, #ff8c00, #ff6000);
+      color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800;
+      padding: 16px 32px; border-radius: var(--radius-md);
+      border: none; cursor: pointer; text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 24px rgba(255,96,0,0.45);
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ff9d1a, #ff7010);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 36px rgba(255,96,0,0.6);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* CTA de compra — mesma identidade laranja do btn-primary */
+    .btn-cta-buy {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      background: linear-gradient(135deg, #ff8c00, #ff6000);
+      color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 800;
+      padding: 22px 40px; border-radius: var(--radius-md);
+      border: none; cursor: pointer; text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 32px rgba(255,96,0,0.5);
+      white-space: nowrap; width: 100%;
+      letter-spacing: -0.01em;
+    }
+    .btn-cta-buy:hover {
+      background: linear-gradient(135deg, #ff9d1a, #ff7010);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 44px rgba(255,96,0,0.65);
+    }
+    .btn-cta-buy:active { transform: translateY(0); }
+
+    /* Preço em verde */
+    .price-value {
+      font-size: clamp(72px, 14vw, 108px);
+      font-weight: 900;
+      color: #22c55e;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      text-shadow: 0 0 60px rgba(34,197,94,0.3);
+    }
+    .price-currency {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 800;
+      color: #22c55e;
+      vertical-align: super;
+      line-height: 1;
+    }
+    .price-from {
+      font-size: 16px;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      margin-bottom: 6px;
+    }
+    .price-installment {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 10px;
+    }
+    .price-microcopy {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .price-microcopy i { color: var(--green); font-size: 12px; }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: transparent; color: var(--text-primary);
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+      padding: 14px 28px; border-radius: var(--radius-md);
+      border: 1px solid var(--border-light); cursor: pointer; text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--yellow);
+      color: var(--yellow);
+      background: var(--yellow-glow2);
+    }
+
+    .btn-lg { font-size: 18px; padding: 20px 44px; }
+    .btn-full { width: 100%; }
+
+    .section-title {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .section-title span { color: var(--yellow); }
+
+    .section-subtitle {
+      font-size: clamp(16px, 2.5vw, 18px);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    .text-center { text-align: center; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+
+    /* ===== NOISE OVERLAY ===== */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 20px;
+      background: rgba(13,13,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .navbar-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .navbar-logo-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--yellow);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .navbar-logo-icon svg { width: 20px; height: 20px; }
+    .navbar-logo-text {
+      font-size: 20px; font-weight: 800;
+      color: var(--text-primary); letter-spacing: -0.03em;
+    }
+    .navbar-logo-text span { color: var(--yellow); }
+    .navbar-cta { font-size: 14px; padding: 10px 22px; font-weight: 800; }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 140px 20px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 500px;
+      background: radial-gradient(ellipse at center, rgba(245,197,24,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content {
+      max-width: 820px; margin: 0 auto;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .hero-badge { margin-bottom: 24px; }
+    .hero-headline {
+      font-size: clamp(34px, 6vw, 64px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+    .hero-headline .highlight {
+      color: var(--yellow);
+      position: relative;
+    }
+    .hero-headline .highlight::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 3px; background: var(--yellow);
+      border-radius: 2px; opacity: 0.4;
+    }
+    .hero-sub {
+      font-size: clamp(17px, 2.5vw, 21px);
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      max-width: 600px; margin-left: auto; margin-right: auto;
+    }
+    .hero-cta-group {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 56px;
+    }
+    .hero-trust {
+      display: flex; align-items: center; justify-content: center;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .hero-trust-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .hero-trust-item i { color: var(--yellow); font-size: 14px; }
+
+    /* ===== APP MOCKUP ===== */
+    .mockup-section {
+      padding: 0 20px 80px;
+      position: relative;
+    }
+    .mockup-wrapper {
+      max-width: 900px; margin: 0 auto;
+      position: relative;
+    }
+    .mockup-glow-bottom {
+      position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 200px;
+      background: radial-gradient(ellipse, rgba(245,197,24,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .app-frame {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .app-topbar {
+      background: var(--bg-secondary);
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .app-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .app-dot-red { background: #ff5f57; }
+    .app-dot-yellow { background: #febc2e; }
+    .app-dot-green { background: #28c840; }
+    .app-topbar-title {
+      margin-left: 12px; font-size: 13px; font-weight: 600;
+      color: var(--text-secondary); letter-spacing: 0.02em;
+    }
+    .app-body { padding: 24px; }
+
+    /* Dashboard mockup */
+    .dash-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .dash-greeting { font-size: 20px; font-weight: 700; }
+    .dash-greeting span { color: var(--yellow); }
+    .dash-date { font-size: 13px; color: var(--text-muted); }
+    .dash-date i { margin-right: 4px; color: var(--yellow); }
+
+    .dash-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-bottom: 20px;
+    }
+    @media (max-width: 600px) { .dash-cards { grid-template-columns: 1fr 1fr; } }
+    .dash-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+    .dash-card-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .dash-card-value {
+      font-size: 22px; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .dash-card-value.green { color: var(--green); }
+    .dash-card-value.yellow { color: var(--yellow); }
+    .dash-card-value.white { color: var(--text-primary); }
+    .dash-card-change {
+      font-size: 11px; margin-top: 4px;
+    }
+    .dash-card-change.up { color: var(--green); }
+    .dash-card-change.down { color: var(--red); }
+
+    .dash-chart-area {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px; margin-bottom: 20px;
+    }
+    .dash-chart-title {
+      font-size: 13px; font-weight: 600; color: var(--text-secondary);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 6px;
+    }
+    .dash-chart-title i { color: var(--yellow); }
+    .chart-bars {
+      display: flex; align-items: flex-end; gap: 8px; height: 80px;
+    }
+    .chart-bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .chart-bar {
+      width: 100%; border-radius: 4px 4px 0 0;
+      background: var(--yellow); opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .chart-bar:hover { opacity: 1; }
+    .chart-bar-label { font-size: 10px; color: var(--text-muted); }
+
+    .dash-sales-list { }
+    .dash-sales-title {
+      font-size: 13px; font-weight: 600; color: var(--text-secondary);
+      margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+    }
+    .dash-sales-title i { color: var(--yellow); }
+    .sale-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .sale-item:last-child { border-bottom: none; }
+    .sale-item-left { display: flex; align-items: center; gap: 10px; }
+    .sale-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--yellow-glow); border: 1px solid rgba(245,197,24,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--yellow);
+    }
+    .sale-name { font-size: 13px; font-weight: 600; }
+    .sale-product { font-size: 11px; color: var(--text-muted); }
+    .sale-value { font-size: 14px; font-weight: 700; color: var(--green); }
+    .sale-status {
+      font-size: 10px; font-weight: 600; padding: 3px 8px;
+      border-radius: 100px; margin-top: 2px;
+    }
+    .sale-status.pago { background: rgba(34,197,94,0.15); color: var(--green); }
+    .sale-status.pendente { background: rgba(245,197,24,0.15); color: var(--yellow); }
+
+    /* ===== PROBLEM SECTION ===== */
+    .problem-section {
+      padding: 80px 20px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-intro {
+      text-align: center; margin-bottom: 60px;
+    }
+    .problem-intro p {
+      font-size: clamp(20px, 3.5vw, 28px);
+      font-weight: 700; line-height: 1.4;
+      color: var(--text-primary);
+      max-width: 700px; margin: 20px auto 0;
+    }
+    .problem-intro p span { color: var(--yellow); }
+
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .problem-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .problem-card:hover {
+      border-color: rgba(245,197,24,0.25);
+      transform: translateY(-4px);
+    }
+    .problem-icon {
+      width: 48px; height: 48px; border-radius: var(--radius-sm);
+      background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: #ef4444; margin-bottom: 16px;
+    }
+    .problem-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .problem-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ===== STORY SECTION ===== */
+    .story-section { padding: 80px 20px; }
+    .story-inner {
+      max-width: 760px; margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 48px 40px;
+      position: relative; overflow: hidden;
+    }
+    @media (max-width: 600px) { .story-inner { padding: 32px 24px; } }
+    .story-inner::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+    }
+    .story-quote {
+      font-size: 56px; line-height: 1; color: var(--yellow);
+      opacity: 0.3; font-family: Georgia, serif; margin-bottom: -16px;
+    }
+    .story-text {
+      font-size: clamp(16px, 2.5vw, 19px);
+      line-height: 1.8; color: var(--text-secondary);
+    }
+    .story-text strong { color: var(--text-primary); }
+    .story-text .highlight { color: var(--yellow); font-weight: 600; }
+    .story-divider {
+      width: 48px; height: 3px; background: var(--yellow);
+      border-radius: 2px; margin: 28px 0;
+    }
+    .story-conclusion {
+      font-size: clamp(18px, 2.5vw, 22px);
+      font-weight: 700; color: var(--text-primary); line-height: 1.4;
+    }
+    .story-conclusion span { color: var(--yellow); }
+
+    /* ===== MECHANISM SECTION ===== */
+    .mechanism-section {
+      padding: 80px 20px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .mechanism-inner { max-width: 860px; margin: 0 auto; }
+    .mechanism-header { text-align: center; margin-bottom: 56px; }
+    .mechanism-steps {
+      display: flex; flex-direction: column; gap: 0;
+      position: relative;
+    }
+    .mechanism-steps::before {
+      content: '';
+      position: absolute; left: 28px; top: 40px; bottom: 40px;
+      width: 2px; background: linear-gradient(to bottom, var(--yellow), transparent);
+    }
+    @media (max-width: 600px) { .mechanism-steps::before { left: 22px; } }
+    .mechanism-step {
+      display: flex; gap: 24px; align-items: flex-start;
+      padding: 28px 0;
+    }
+    .step-number {
+      flex-shrink: 0;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--yellow);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 800; color: var(--yellow);
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 600px) { .step-number { width: 44px; height: 44px; font-size: 16px; } }
+    .step-content { padding-top: 8px; }
+    .step-content h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .step-content p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; }
+
+    /* ===== SOLUTION SECTION ===== */
+    .solution-section { padding: 80px 20px; }
+    .solution-header { text-align: center; margin-bottom: 64px; }
+    .solution-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: all 0.3s ease;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--yellow); opacity: 0; transition: opacity 0.3s;
+    }
+    .feature-card:hover {
+      border-color: rgba(245,197,24,0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3), var(--shadow-glow);
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: var(--radius-sm);
+      background: var(--yellow-glow); border: 1px solid rgba(245,197,24,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: var(--yellow); margin-bottom: 18px;
+    }
+    .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+    .feature-benefit {
+      margin-top: 14px; padding: 10px 14px;
+      background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2);
+      border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 600; color: var(--green);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ===== CTA BANNER ===== */
+    .cta-banner {
+      padding: 60px 20px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cta-banner-inner {
+      max-width: 700px; margin: 0 auto; text-align: center;
+    }
+    .cta-banner h2 {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 800; line-height: 1.2; margin-bottom: 16px;
+    }
+    .cta-banner h2 span { color: var(--yellow); }
+    .cta-banner p { font-size: 17px; color: var(--text-secondary); margin-bottom: 32px; }
+    .cta-banner-buttons {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; flex-wrap: wrap;
+    }
+
+    /* ===== SCREENSHOTS SECTION ===== */
+    .screenshots-section { padding: 80px 20px; }
+    .screenshots-header { text-align: center; margin-bottom: 56px; }
+    .screenshots-tabs {
+      display: flex; justify-content: center; gap: 8px;
+      flex-wrap: wrap; margin-bottom: 32px;
+    }
+    .tab-btn {
+      padding: 10px 20px; border-radius: 100px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-secondary); font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--yellow-glow); border-color: rgba(245,197,24,0.4);
+      color: var(--yellow);
+    }
+    .screenshot-display {
+      max-width: 860px; margin: 0 auto;
+    }
+    .screen-panel { display: none; }
+    .screen-panel.active { display: block; }
+
+    /* Mobile mockup */
+    .mobile-frame-wrapper {
+      display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+    }
+    .mobile-frame {
+      width: 260px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .mobile-notch {
+      background: var(--bg-secondary);
+      height: 40px; display: flex; align-items: center; justify-content: center;
+    }
+    .mobile-notch-bar {
+      width: 80px; height: 6px; background: var(--border-light);
+      border-radius: 3px;
+    }
+    .mobile-screen { padding: 16px; }
+    .mobile-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .mobile-title { font-size: 16px; font-weight: 700; }
+    .mobile-icon { color: var(--yellow); font-size: 18px; }
+    .mobile-stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px; margin-bottom: 10px;
+    }
+    .mobile-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .mobile-stat-value { font-size: 20px; font-weight: 800; }
+    .mobile-stat-value.yellow { color: var(--yellow); }
+    .mobile-stat-value.green { color: var(--green); }
+    .mobile-list-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .mobile-list-item:last-child { border-bottom: none; }
+    .mobile-list-name { font-weight: 600; }
+    .mobile-list-val { color: var(--green); font-weight: 700; }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials-section {
+      padding: 80px 20px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .testimonials-header { text-align: center; margin-bottom: 56px; }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; max-width: 1000px; margin: 0 auto;
+    }
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: all 0.3s;
+    }
+    .testimonial-card:hover {
+      border-color: rgba(245,197,24,0.25);
+      transform: translateY(-4px);
+    }
+    .testimonial-stars {
+      display: flex; gap: 4px; margin-bottom: 16px;
+    }
+    .testimonial-stars i { color: var(--yellow); font-size: 14px; }
+    .testimonial-text {
+      font-size: 15px; color: var(--text-secondary);
+      line-height: 1.7; margin-bottom: 20px; font-style: italic;
+    }
+    .testimonial-text strong { color: var(--text-primary); font-style: normal; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700; color: #0d0d0f;
+      background: var(--yellow); flex-shrink: 0;
+    }
+    .testimonial-name { font-size: 14px; font-weight: 700; }
+    .testimonial-role { font-size: 12px; color: var(--text-muted); }
+
+    /* ===== STATS SECTION ===== */
+    .stats-section { padding: 64px 20px; }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2px; max-width: 900px; margin: 0 auto;
+      background: var(--border); border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .stat-item {
+      background: var(--bg-card);
+      padding: 36px 24px; text-align: center;
+    }
+    .stat-value {
+      font-size: 40px; font-weight: 900; color: var(--yellow);
+      letter-spacing: -0.03em; line-height: 1;
+    }
+    .stat-label { font-size: 14px; color: var(--text-secondary); margin-top: 8px; }
+
+    /* ===== OFFER SECTION ===== */
+    .offer-section { padding: 80px 20px; }
+    .offer-inner {
+      max-width: 760px; margin: 0 auto; text-align: center;
+    }
+    .offer-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(245,197,24,0.3);
+      border-radius: var(--radius-xl);
+      padding: 48px 40px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 0 60px rgba(245,197,24,0.08);
+    }
+    @media (max-width: 600px) { .offer-card { padding: 32px 24px; } }
+    .offer-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+    }
+    .offer-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at top, rgba(245,197,24,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .offer-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--yellow); color: #0d0d0f;
+      font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 6px 16px; border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .offer-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 900; line-height: 1.15; margin-bottom: 16px;
+    }
+    .offer-title span { color: var(--yellow); }
+    .offer-desc {
+      font-size: 17px; color: var(--text-secondary);
+      line-height: 1.65; margin-bottom: 32px;
+    }
+    .offer-features {
+      display: flex; flex-direction: column; gap: 12px;
+      text-align: left; margin-bottom: 36px;
+      max-width: 480px; margin-left: auto; margin-right: auto;
+    }
+    .offer-feature {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 15px; font-weight: 500;
+    }
+    .offer-feature i { color: var(--yellow); font-size: 16px; flex-shrink: 0; }
+    .offer-cta-group {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .offer-guarantee {
+      font-size: 13px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .offer-guarantee i { color: var(--green); }
+
+    /* ===== FAQ SECTION ===== */
+    .faq-section {
+      padding: 80px 20px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+    }
+    .faq-header { text-align: center; margin-bottom: 56px; }
+    .faq-list { max-width: 720px; margin: 0 auto; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .faq-item.open { border-color: rgba(245,197,24,0.3); }
+    .faq-question {
+      width: 100%; background: var(--bg-card);
+      border: none; cursor: pointer;
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      text-align: left;
+    }
+    .faq-question-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px; font-weight: 600; color: var(--text-primary);
+    }
+    .faq-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--yellow-glow); border: 1px solid rgba(245,197,24,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--yellow); font-size: 12px; flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+      background: var(--bg-card);
+    }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer-inner {
+      padding: 0 24px 20px;
+      font-size: 15px; color: var(--text-secondary); line-height: 1.7;
+    }
+
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      padding: 100px 20px;
+      position: relative; overflow: hidden;
+    }
+    .final-cta-glow {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(245,197,24,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .final-cta-inner {
+      max-width: 700px; margin: 0 auto; text-align: center;
+      position: relative; z-index: 1;
+    }
+    .final-cta h2 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 900; line-height: 1.1; margin-bottom: 20px;
+    }
+    .final-cta h2 span { color: var(--yellow); }
+    .final-cta p {
+      font-size: 18px; color: var(--text-secondary);
+      line-height: 1.65; margin-bottom: 40px;
+    }
+    .final-cta-buttons {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; flex-wrap: wrap;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 40px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-secondary);
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .footer-logo-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--yellow);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .footer-logo-text {
+      font-size: 18px; font-weight: 800; color: var(--text-primary);
+    }
+    .footer-logo-text span { color: var(--yellow); }
+    .footer-copy { font-size: 13px; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-size: 13px; color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--yellow); }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== FLOATING BADGE ===== */
+    .floating-cta {
+      position: fixed; bottom: 24px; right: 24px; z-index: 99;
+      display: none;
+    }
+    .floating-cta.show { display: flex; }
+    .floating-cta a {
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #ff8c00, #ff6000);
+      color: #fff;
+      font-size: 14px; font-weight: 800;
+      padding: 14px 24px; border-radius: 100px;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(255,96,0,0.5);
+      transition: all 0.25s;
+    }
+    .floating-cta a:hover {
+      background: linear-gradient(135deg, #ff9d1a, #ff7010);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(255,96,0,0.65);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    /* ===== RESPONSIVE — MOBILE FIRST ===== */
+
+    /* Tablet (max 768px) */
+    @media (max-width: 768px) {
+      /* Hero */
+      .hero { padding: 110px 20px 56px; }
+      .hero-headline { font-size: clamp(32px, 8vw, 48px); margin-bottom: 20px; }
+      .hero-sub { font-size: 17px; line-height: 1.7; margin-bottom: 32px; }
+      .hero-cta-group { gap: 12px; margin-bottom: 40px; }
+      .hero-trust { gap: 14px; }
+      .hero-trust-item { font-size: 13px; }
+
+      /* Sections spacing */
+      .pain-section, .story-section, .mechanism-section,
+      .solution-section, .cta-banner, .screenshots-section,
+      .testimonials-section, .stats-section, .offer-section,
+      .final-offer-section, .faq-section, .final-cta-section { padding-left: 16px; padding-right: 16px; }
+
+      /* Cards */
+      .story-inner { padding: 32px 24px; }
+      .offer-card { padding: 36px 24px; }
+      .dash-cards { grid-template-columns: 1fr 1fr; }
+
+      /* Stats grid */
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+
+      /* Mobile frames */
+      .mobile-frame { width: 220px; }
+    }
+
+    /* Mobile (max 480px) */
+    @media (max-width: 480px) {
+      /* Base */
+      body { font-size: 16px; }
+
+      /* Navbar */
+      .navbar-cta { font-size: 12px; padding: 9px 14px; white-space: nowrap; max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+
+      /* Hero */
+      .hero { padding: 100px 16px 48px; }
+      .hero-headline { font-size: clamp(30px, 9vw, 42px); line-height: 1.1; }
+      .hero-sub { font-size: 16px; line-height: 1.75; }
+      .hero-cta-group { flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 36px; }
+      .hero-trust { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 8px; }
+      .hero-trust-item { font-size: 14px; }
+
+      /* Buttons — full width on mobile */
+      .btn-lg { font-size: 17px; padding: 18px 24px; width: 100%; justify-content: center; }
+      .btn-primary { font-size: 16px; }
+      .btn-secondary { font-size: 15px; padding: 16px 24px; }
+      .cta-banner-buttons { flex-direction: column; align-items: stretch; gap: 12px; }
+      .final-cta-buttons { flex-direction: column; align-items: stretch; gap: 12px; }
+
+      /* Section titles */
+      .section-title { font-size: clamp(24px, 7vw, 34px); }
+      .section-sub { font-size: 15px; line-height: 1.7; }
+
+      /* Pain cards */
+      .pain-grid { grid-template-columns: 1fr; gap: 14px; }
+      .pain-card { padding: 20px; }
+
+      /* Story */
+      .story-inner { padding: 28px 20px; }
+      .story-inner p { font-size: 16px; line-height: 1.8; }
+
+      /* Mechanism */
+      .mechanism-steps { gap: 24px; }
+      .step-content h3 { font-size: 17px; }
+      .step-content p { font-size: 15px; line-height: 1.7; }
+
+      /* Solution features */
+      .features-grid { grid-template-columns: 1fr; gap: 14px; }
+      .feature-card { padding: 20px; }
+      .feature-title { font-size: 16px; }
+      .feature-desc { font-size: 14px; line-height: 1.65; }
+
+      /* Pricing section */
+      .offer-card { padding: 28px 16px; }
+      .offer-title { font-size: clamp(24px, 7vw, 32px); }
+      .offer-desc { font-size: 15px; line-height: 1.7; }
+      .price-from { font-size: 15px; }
+      .price-value { font-size: clamp(80px, 20vw, 108px) !important; }
+      .price-currency { font-size: clamp(36px, 9vw, 48px) !important; }
+      .price-installment { font-size: 14px; }
+      .price-microcopy { font-size: 13px; }
+      .btn-cta-buy { font-size: 18px; padding: 20px 24px; }
+
+      /* Testimonials */
+      .testimonials-grid { grid-template-columns: 1fr; gap: 16px; }
+      .testimonial-card { padding: 22px; }
+      .testimonial-text { font-size: 15px; line-height: 1.75; }
+
+      /* Stats */
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat-value { font-size: 32px; }
+      .stat-label { font-size: 13px; }
+      .stat-item { padding: 28px 16px; }
+
+      /* Screenshots */
+      .mobile-frame-wrapper { gap: 16px; }
+      .mobile-frame { width: 200px; }
+      .screenshots-tabs { gap: 6px; }
+      .tab-btn { font-size: 13px; padding: 9px 16px; }
+
+      /* FAQ */
+      .faq-question { font-size: 15px; padding: 18px 16px; }
+      .faq-answer { font-size: 14px; line-height: 1.7; padding: 0 16px 16px; }
+
+      /* Offer list */
+      .offer-features-list { text-align: left; }
+      .offer-features-list li { font-size: 15px; line-height: 1.65; }
+
+      /* Final CTA */
+      .final-cta-section { padding: 60px 16px; }
+
+      /* Floating button */
+      .floating-cta { bottom: 16px; right: 16px; }
+      .floating-cta a { font-size: 13px; padding: 12px 20px; }
+
+      /* Mockup dashboard */
+      .app-body { padding: 16px; }
+      .dash-greeting { font-size: 17px; }
+      .dash-card-value { font-size: 18px; }
+      .dash-card-label { font-size: 10px; }
+    }
+
+    /* Very small screens (max 360px) */
+    @media (max-width: 360px) {
+      .hero-headline { font-size: 28px; }
+      .navbar-cta { display: none; }
+      .price-value { font-size: 72px !important; }
+      .mobile-frame { width: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="navbar-logo">
+        <div class="navbar-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#0d0d0f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="navbar-logo-text">Venda<span>Fácil</span></span>
+      </a>
+      <a href="#oferta" class="btn-primary navbar-cta">Quero ver meu lucro real agora</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-badge fade-in">
+        <i class="fa-solid fa-bolt"></i>
+        Controle financeiro para quem vende todo dia
+      </div>
+
+      <h1 class="hero-headline fade-in">
+        Você vende todo dia…<br />
+        mas sabe quanto<br />
+        <span class="highlight">realmente ganhou</span><br />
+        esse mês?
+      </h1>
+
+      <p class="hero-sub fade-in">
+        Descubra seu <strong style="color:var(--yellow)">lucro real</strong> em menos de 1 minuto por dia — direto no celular ou computador.
+      </p>
+
+      <div class="hero-cta-group fade-in">
+        <a href="#oferta" class="btn-primary btn-lg">
+          <i class="fa-solid fa-rocket"></i>
+          Quero ver meu lucro real agora
+        </a>
+        <a href="#demo" class="btn-secondary btn-lg">
+          <i class="fa-solid fa-play"></i>
+          Ver como funciona
+        </a>
+      </div>
+
+      <div class="hero-trust fade-in">
+        <div class="hero-trust-item">
+          <i class="fa-solid fa-check-circle"></i>
+          Sem instalar nada
+        </div>
+        <div class="hero-trust-item">
+          <i class="fa-solid fa-check-circle"></i>
+          Use no celular no dia a dia
+        </div>
+        <div class="hero-trust-item">
+          <i class="fa-solid fa-check-circle"></i>
+          Acompanhe também no computador
+        </div>
+        <div class="hero-trust-item">
+          <i class="fa-solid fa-check-circle"></i>
+          Acesso imediato
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== APP MOCKUP ===== -->
+  <section class="mockup-section" id="demo">
+    <div class="mockup-wrapper fade-in">
+      <div class="app-frame">
+        <div class="app-topbar">
+          <div class="app-dot app-dot-red"></div>
+          <div class="app-dot app-dot-yellow"></div>
+          <div class="app-dot app-dot-green"></div>
+          <span class="app-topbar-title">VendaFácil — Dashboard</span>
+        </div>
+        <div class="app-body">
+          <div class="dash-header">
+            <div>
+              <div class="dash-greeting">Olá, <span>Usuário</span> 👋</div>
+              <div style="font-size:13px;color:var(--text-muted);margin-top:2px;">Aqui está seu resumo de hoje</div>
+            </div>
+            <div class="dash-date"><i class="fa-regular fa-calendar"></i>Março 2026</div>
+          </div>
+
+          <div class="dash-cards">
+            <div class="dash-card">
+              <div class="dash-card-label">Faturamento</div>
+              <div class="dash-card-value yellow">R$ 4.820</div>
+              <div class="dash-card-change up"><i class="fa-solid fa-arrow-up"></i> +18% vs mês passado</div>
+            </div>
+            <div class="dash-card">
+              <div class="dash-card-label">Lucro Real</div>
+              <div class="dash-card-value green">R$ 2.340</div>
+              <div class="dash-card-change up"><i class="fa-solid fa-arrow-up"></i> +12% vs mês passado</div>
+            </div>
+            <div class="dash-card">
+              <div class="dash-card-label">Vendas</div>
+              <div class="dash-card-value white">47</div>
+              <div class="dash-card-change up"><i class="fa-solid fa-arrow-up"></i> +8 esta semana</div>
+            </div>
+          </div>
+
+          <div class="dash-chart-area">
+            <div class="dash-chart-title">
+              <i class="fa-solid fa-chart-bar"></i>
+              Faturamento — últimos 7 dias
+            </div>
+            <div class="chart-bars">
+              <div class="chart-bar-group">
+                <div class="chart-bar" style="height:45px"></div>
+                <div class="chart-bar-label">Seg</div>
+              </div>
+              <div class="chart-bar-group">
+                <div class="chart-bar" style="height:62px"></div>
+                <div class="chart-bar-label">Ter</div>
+              </div>
+              <div class="chart-bar-group">
+                <div class="chart-bar" style="height:38px"></div>
+                <div class="chart-bar-label">Qua</div>
+              </div>
+              <div class="chart-bar-group">
+                <div class="chart-bar" style="height:74px"></div>
+                <div class="chart-bar-label">Qui</div>
+              </div>
+              <div class="chart-bar-group">
+                <div class="chart-bar" style="height:55px"></div>
+                <div class="chart-bar-label">Sex</div>
+              </div>
+              <div class="chart-bar-group">
+                <div class="chart-bar" style="height:68px"></div>
+                <div class="chart-bar-label">Sáb</div>
+              </div>
+              <div class="chart-bar-group">
+                <div class="chart-bar" style="height:80px;opacity:1"></div>
+                <div class="chart-bar-label">Dom</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-sales-list">
+            <div class="dash-sales-title">
+              <i class="fa-solid fa-list"></i>
+              Últimas vendas
+            </div>
+            <div class="sale-item">
+              <div class="sale-item-left">
+                <div class="sale-avatar">M</div>
+                <div>
+                  <div class="sale-name">Maria Silva</div>
+                  <div class="sale-product">Marmita fitness × 3</div>
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div class="sale-value">R$ 75,00</div>
+                <div class="sale-status pago">Pago</div>
+              </div>
+            </div>
+            <div class="sale-item">
+              <div class="sale-item-left">
+                <div class="sale-avatar">J</div>
+                <div>
+                  <div class="sale-name">João Pereira</div>
+                  <div class="sale-product">Bolo no pote × 5</div>
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div class="sale-value">R$ 90,00</div>
+                <div class="sale-status pago">Pago</div>
+              </div>
+            </div>
+            <div class="sale-item">
+              <div class="sale-item-left">
+                <div class="sale-avatar">A</div>
+                <div>
+                  <div class="sale-name">Ana Costa</div>
+                  <div class="sale-product">Salgados × 50</div>
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div class="sale-value">R$ 120,00</div>
+                <div class="sale-status pendente">Pendente</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup-glow-bottom"></div>
+    </div>
+    <p class="fade-in" style="text-align:center;margin-top:28px;font-size:15px;color:var(--text-secondary);max-width:560px;margin-left:auto;margin-right:auto;padding:0 20px">Veja como em poucos segundos você enxerga <strong style="color:var(--text-primary)">faturamento, lucro real e crescimento</strong> do seu negócio — tudo numa tela só.</p>
+  </section>
+
+  <!-- ===== PROBLEM SECTION ===== -->
+  <section class="problem-section">
+    <div class="container">
+      <div class="problem-intro fade-in">
+        <div class="badge"><i class="fa-solid fa-triangle-exclamation"></i> Você se identifica com isso?</div>
+        <p>
+          A maioria dos pequenos vendedores trabalha <span>muito</span> e ganha <span>menos do que deveria</span> — não por vender pouco, mas por não saber o que está acontecendo com o dinheiro.
+        </p>
+      </div>
+
+      <div class="problem-grid">
+        <div class="problem-card fade-in">
+          <div class="problem-icon"><i class="fa-solid fa-book"></i></div>
+          <h3>Caderno e papel</h3>
+          <p>Você anota as vendas num caderno, num papel solto ou no bloco de notas do celular — e quando precisa de um número, não encontra.</p>
+        </div>
+        <div class="problem-card fade-in">
+          <div class="problem-icon"><i class="fa-solid fa-brain"></i></div>
+          <h3>Tudo de cabeça</h3>
+          <p>Você tenta lembrar quanto vendeu, quem pagou, quem deve. No fim do mês, a conta não fecha e você não sabe onde foi o dinheiro.</p>
+        </div>
+        <div class="problem-card fade-in">
+          <div class="problem-icon"><i class="fa-solid fa-question-circle"></i></div>
+          <h3>Lucro? Qual lucro?</h3>
+          <p>Você fatura, mas não sabe quanto sobra depois de pagar ingredientes, embalagens e custos. Será que está ganhando ou perdendo?</p>
+        </div>
+        <div class="problem-card fade-in">
+          <div class="problem-icon"><i class="fa-solid fa-user-xmark"></i></div>
+          <h3>Clientes sem controle</h3>
+          <p>Quem pagou? Quem ficou devendo? Você precisa ligar, perguntar, constrangendo o cliente — e às vezes ainda esquece de cobrar.</p>
+        </div>
+        <div class="problem-card fade-in">
+          <div class="problem-icon"><i class="fa-solid fa-chart-line-down"></i></div>
+          <h3>Sem visão do negócio</h3>
+          <p>Você não sabe quais produtos vendem mais, em qual dia você fatura mais, nem se o negócio está crescendo ou encolhendo.</p>
+        </div>
+        <div class="problem-card fade-in">
+          <div class="problem-icon"><i class="fa-solid fa-clock"></i></div>
+          <h3>Tempo perdido</h3>
+          <p>Horas do seu dia são gastas tentando organizar o que poderia ser automático — tempo que você poderia usar para vender mais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STORY SECTION ===== -->
+  <section class="story-section">
+    <div class="container-sm">
+      <div class="story-inner fade-in">
+        <div class="story-quote">"</div>
+        <p class="story-text">
+          Imagine a Carla. Ela acorda cedo, prepara marmitas, vende para 20 pessoas por dia. <strong>Trabalha de segunda a sábado.</strong> No fim do mês, ela olha para a conta e pensa: <em>"Cadê o dinheiro? Eu vendi tanto…"</em>
+        </p>
+        <br />
+        <p class="story-text">
+          Ela anota tudo num caderno. Mas às vezes esquece. Às vezes o caderno molha. Às vezes ela não sabe se aquela venda foi paga ou não. <strong>Ela trabalha muito e ganha pouco</strong> — não porque vende barato, mas porque <span class="highlight">não sabe o que está acontecendo com o dinheiro dela.</span>
+        </p>
+        <div class="story-divider"></div>
+        <p class="story-conclusion">
+          O problema da Carla não é vender pouco.<br />
+          <span>É não ter um sistema simples de controle.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING SECTION ===== -->
+  <section class="offer-section" id="preco" style="padding:80px 20px;background:var(--bg-secondary);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="offer-inner">
+      <div class="offer-card fade-in" style="border-color:rgba(245,197,24,0.5)">
+        <div class="offer-badge" style="margin-bottom:8px">
+          <i class="fa-solid fa-tag"></i>
+          Oferta de lançamento
+        </div>
+        <p style="font-size:13px;color:var(--yellow);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:20px">Por tempo limitado</p>
+        <h2 class="offer-title">
+          Comece a controlar seu<br /><span>lucro real hoje</span>
+        </h2>
+        <p class="offer-desc">
+          Acesso completo ao VendaFácil. Sem complicação, sem instalação — funciona direto no celular ou computador.
+        </p>
+
+        <div style="margin-bottom:8px;text-align:center">
+          <div class="price-from">De R$&nbsp;197</div>
+          <div style="display:flex;align-items:baseline;justify-content:center;gap:4px">
+            <span class="price-currency">R$</span>
+            <span class="price-value">97</span>
+          </div>
+          <div class="price-installment">ou 12x de R$&nbsp;9,74 no cart&atilde;o</div>
+          <div class="price-microcopy">
+            <i class="fa-solid fa-circle-check"></i>
+            Pagamento &uacute;nico &bull; Acesso imediato
+          </div>
+        </div>
+
+        <div style="height:1px;background:var(--border);margin:28px 0"></div>
+
+        <div class="offer-cta-group" style="margin-bottom:28px">
+          <a href="#" class="btn-cta-buy">
+            <i class="fa-solid fa-rocket"></i>
+            Quero ver meu lucro real agora
+          </a>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;max-width:400px;margin:0 auto 24px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-secondary)">
+            <i class="fa-solid fa-bolt" style="color:var(--yellow);font-size:15px;flex-shrink:0"></i>
+            Acesso imediato após a compra
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-secondary)">
+            <i class="fa-solid fa-mobile-screen" style="color:var(--yellow);font-size:15px;flex-shrink:0"></i>
+            Funciona no celular e no computador
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-secondary)">
+            <i class="fa-solid fa-circle-check" style="color:var(--yellow);font-size:15px;flex-shrink:0"></i>
+            Sem instalação — abre direto no navegador
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-secondary)">
+            <i class="fa-solid fa-hand-holding-heart" style="color:var(--yellow);font-size:15px;flex-shrink:0"></i>
+            Interface simples e prática — qualquer pessoa usa
+          </div>
+        </div>
+
+        <div style="background:rgba(245,197,24,0.07);border:1px solid rgba(245,197,24,0.2);border-radius:12px;padding:14px 20px;font-size:13px;color:var(--yellow);font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px">
+          <i class="fa-solid fa-clock"></i>
+          Oferta de lançamento por tempo limitado. Garanta agora antes que o preço suba.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MECHANISM SECTION ===== -->
+  <section class="mechanism-section">
+    <div class="mechanism-inner">
+      <div class="mechanism-header fade-in">
+        <div class="badge" style="margin-bottom:20px"><i class="fa-solid fa-lightbulb"></i> A raiz do problema</div>
+        <h2 class="section-title">Não é falta de esforço.<br /><span>É falta de sistema.</span></h2>
+        <p class="section-subtitle mx-auto" style="margin-top:16px;text-align:center">
+          Você pode vender mais e trabalhar menos quando tem as informações certas na hora certa. Veja como o ciclo do descontrole funciona — e como quebrar ele.
+        </p>
+      </div>
+
+      <div class="mechanism-steps">
+        <div class="mechanism-step fade-in">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Você vende, mas não registra direito</h3>
+            <p>Cada venda não registrada é uma informação perdida. Sem dados, você não pode tomar decisões inteligentes sobre o seu negócio.</p>
+          </div>
+        </div>
+        <div class="mechanism-step fade-in">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Sem registro, não tem controle</h3>
+            <p>Você não sabe quem pagou, quem deve, quanto gastou, quanto sobrou. O dinheiro some e você não sabe por quê.</p>
+          </div>
+        </div>
+        <div class="mechanism-step fade-in">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Sem controle, você não cresce</h3>
+            <p>Como aumentar o que você não mede? Você fica preso no mesmo ciclo, trabalhando muito sem ver o negócio evoluir.</p>
+          </div>
+        </div>
+        <div class="mechanism-step fade-in">
+          <div class="step-number" style="background:var(--yellow);color:#0d0d0f;border-color:var(--yellow)">✓</div>
+          <div class="step-content">
+            <h3 style="color:var(--yellow)">Com o VendaFácil, você quebra esse ciclo</h3>
+            <p>Registre cada venda em segundos, veja seu lucro real, controle seus clientes e tome decisões com base em números — não em achismo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOLUTION SECTION ===== -->
+  <section class="solution-section" id="funcionalidades">
+    <div class="container">
+      <div class="solution-header fade-in">
+        <div class="badge" style="margin-bottom:20px"><i class="fa-solid fa-star"></i> A solução</div>
+        <h2 class="section-title text-center">
+          Conheça o <span>VendaFácil</span>
+        </h2>
+        <p class="section-subtitle text-center mx-auto" style="margin-top:16px">
+          O sistema mais simples do Brasil para quem vende todo dia e quer saber exatamente quanto está ganhando.
+        </p>
+      </div>
+
+      <div class="solution-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon"><i class="fa-solid fa-plus-circle"></i></div>
+          <h3>Registro de vendas em segundos</h3>
+          <p>Cadastre cada venda com produto, valor, cliente e forma de pagamento em menos de 30 segundos. Sem complicação, sem planilha.</p>
+          <div class="feature-benefit">
+            <i class="fa-solid fa-check"></i>
+            Nunca mais esqueça uma venda
+          </div>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon"><i class="fa-solid fa-chart-pie"></i></div>
+          <h3>Lucro real em tempo real</h3>
+          <p>Veja exatamente quanto você está ganhando depois de descontar todos os custos. Chega de achar que está lucrando quando na verdade está no prejuízo.</p>
+          <div class="feature-benefit">
+            <i class="fa-solid fa-check"></i>
+            Descubra seu lucro verdadeiro
+          </div>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon"><i class="fa-solid fa-users"></i></div>
+          <h3>Controle de clientes</h3>
+          <p>Saiba quem comprou, quanto gastou, se pagou ou deve. Nunca mais passe pela situação constrangedora de não saber se o cliente pagou.</p>
+          <div class="feature-benefit">
+            <i class="fa-solid fa-check"></i>
+            Cobranças sem constrangimento
+          </div>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon"><i class="fa-solid fa-chart-bar"></i></div>
+          <h3>Dashboard visual completo</h3>
+          <p>Gráficos simples que mostram seu faturamento, vendas por dia, produtos mais vendidos e evolução do negócio — tudo numa tela só.</p>
+          <div class="feature-benefit">
+            <i class="fa-solid fa-check"></i>
+            Visão clara do seu negócio
+          </div>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon"><i class="fa-solid fa-box"></i></div>
+          <h3>Catálogo de produtos</h3>
+          <p>Cadastre seus produtos com preço de custo e venda. O sistema calcula automaticamente a margem de lucro de cada item que você vende.</p>
+          <div class="feature-benefit">
+            <i class="fa-solid fa-check"></i>
+            Precifique com inteligência
+          </div>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+          <h3>Relatórios automáticos</h3>
+          <p>Relatórios diários, semanais e mensais gerados automaticamente. Veja sua evolução, identifique os melhores dias e tome decisões melhores.</p>
+          <div class="feature-benefit">
+            <i class="fa-solid fa-check"></i>
+            Decisões baseadas em dados
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="cta-banner">
+    <div class="cta-banner-inner fade-in">
+      <h2>Pronto para descobrir seu<br /><span>lucro real?</span></h2>
+      <p>Mais de 3.000 vendedores já têm controle total das finanças com o VendaFácil. Agora é a sua vez.</p>
+      <div class="cta-banner-buttons">
+        <a href="#oferta" class="btn-primary btn-lg">
+          <i class="fa-solid fa-rocket"></i>
+          Quero ver meu lucro real agora
+        </a>
+        <a href="#funcionalidades" class="btn-secondary btn-lg">
+          Ver funcionalidades
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREENSHOTS SECTION ===== -->
+  <section class="screenshots-section" id="screenshots">
+    <div class="container">
+        <div class="screenshots-header fade-in">
+        <div class="badge" style="margin-bottom:20px"><i class="fa-solid fa-mobile-screen"></i> Celular e computador</div>
+        <h2 class="section-title text-center">
+          Tudo na palma da sua mão
+        </h2>
+        <p class="section-subtitle text-center mx-auto" style="margin-top:16px">
+          Use no celular no dia a dia e acompanhe também no computador. Sem instalar nada — basta abrir o navegador e começar.
+        </p>
+      </div>
+
+      <div class="screenshots-tabs fade-in">
+        <button class="tab-btn active" onclick="showTab('dashboard')">Dashboard</button>
+        <button class="tab-btn" onclick="showTab('vendas')">Vendas</button>
+        <button class="tab-btn" onclick="showTab('clientes')">Clientes</button>
+      </div>
+
+      <div class="screenshot-display fade-in">
+        <!-- Dashboard tab -->
+        <div class="screen-panel active" id="tab-dashboard">
+          <div class="mobile-frame-wrapper">
+            <div class="mobile-frame">
+              <div class="mobile-notch"><div class="mobile-notch-bar"></div></div>
+              <div class="mobile-screen">
+                <div class="mobile-header">
+                  <div class="mobile-title">Dashboard</div>
+                  <div class="mobile-icon"><i class="fa-solid fa-chart-line"></i></div>
+                </div>
+                <div class="mobile-stat-card">
+                  <div class="mobile-stat-label">Faturamento do mês</div>
+                  <div class="mobile-stat-value yellow">R$ 4.820</div>
+                </div>
+                <div class="mobile-stat-card">
+                  <div class="mobile-stat-label">Lucro real</div>
+                  <div class="mobile-stat-value green">R$ 2.340</div>
+                </div>
+                <div style="margin-top:12px">
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em">Vendas hoje</div>
+                  <div class="mobile-list-item">
+                    <span class="mobile-list-name">Marmita fitness</span>
+                    <span class="mobile-list-val">R$ 35</span>
+                  </div>
+                  <div class="mobile-list-item">
+                    <span class="mobile-list-name">Bolo no pote</span>
+                    <span class="mobile-list-val">R$ 18</span>
+                  </div>
+                  <div class="mobile-list-item">
+                    <span class="mobile-list-name">Salgados × 20</span>
+                    <span class="mobile-list-val">R$ 40</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mobile-frame" style="margin-top:40px">
+              <div class="mobile-notch"><div class="mobile-notch-bar"></div></div>
+              <div class="mobile-screen">
+                <div class="mobile-header">
+                  <div class="mobile-title">Resumo</div>
+                  <div class="mobile-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div class="mobile-stat-card">
+                    <div class="mobile-stat-label">Vendas esta semana</div>
+                    <div class="mobile-stat-value white">23</div>
+                  </div>
+                  <div class="mobile-stat-card">
+                    <div class="mobile-stat-label">Ticket médio</div>
+                    <div class="mobile-stat-value yellow">R$ 47</div>
+                  </div>
+                  <div class="mobile-stat-card">
+                    <div class="mobile-stat-label">Melhor dia</div>
+                    <div style="font-size:16px;font-weight:800;color:var(--text-primary)">Sábado</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vendas tab -->
+        <div class="screen-panel" id="tab-vendas">
+          <div class="mobile-frame-wrapper">
+            <div class="mobile-frame">
+              <div class="mobile-notch"><div class="mobile-notch-bar"></div></div>
+              <div class="mobile-screen">
+                <div class="mobile-header">
+                  <div class="mobile-title">Nova Venda</div>
+                  <div class="mobile-icon"><i class="fa-solid fa-plus"></i></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:10px">
+                    <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px">Produto</div>
+                    <div style="font-size:13px;font-weight:600">Marmita fitness</div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                    <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:10px">
+                      <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px">Qtd</div>
+                      <div style="font-size:13px;font-weight:600">3</div>
+                    </div>
+                    <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:10px">
+                      <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px">Valor</div>
+                      <div style="font-size:13px;font-weight:700;color:var(--yellow)">R$ 105</div>
+                    </div>
+                  </div>
+                  <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:10px">
+                    <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px">Cliente</div>
+                    <div style="font-size:13px;font-weight:600">Maria Silva</div>
+                  </div>
+                  <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:10px;text-align:center">
+                    <div style="font-size:12px;font-weight:700;color:var(--green)"><i class="fa-solid fa-check-circle"></i> Pago via Pix</div>
+                  </div>
+                  <div style="background:var(--yellow);border-radius:8px;padding:12px;text-align:center;font-size:13px;font-weight:800;color:#0d0d0f">
+                    <i class="fa-solid fa-save"></i> Registrar Venda
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mobile-frame" style="margin-top:40px">
+              <div class="mobile-notch"><div class="mobile-notch-bar"></div></div>
+              <div class="mobile-screen">
+                <div class="mobile-header">
+                  <div class="mobile-title">Histórico</div>
+                  <div class="mobile-icon"><i class="fa-solid fa-history"></i></div>
+                </div>
+                <div class="mobile-list-item">
+                  <div><div class="mobile-list-name">Maria S.</div><div style="font-size:10px;color:var(--text-muted)">Marmita × 3</div></div>
+                  <div style="text-align:right"><div class="mobile-list-val">R$ 105</div><div style="font-size:10px;background:rgba(34,197,94,0.15);color:var(--green);padding:2px 6px;border-radius:4px;margin-top:2px">Pago</div></div>
+                </div>
+                <div class="mobile-list-item">
+                  <div><div class="mobile-list-name">João P.</div><div style="font-size:10px;color:var(--text-muted)">Bolo × 5</div></div>
+                  <div style="text-align:right"><div class="mobile-list-val">R$ 90</div><div style="font-size:10px;background:rgba(34,197,94,0.15);color:var(--green);padding:2px 6px;border-radius:4px;margin-top:2px">Pago</div></div>
+                </div>
+                <div class="mobile-list-item">
+                  <div><div class="mobile-list-name">Ana C.</div><div style="font-size:10px;color:var(--text-muted)">Salgados × 50</div></div>
+                  <div style="text-align:right"><div class="mobile-list-val">R$ 120</div><div style="font-size:10px;background:rgba(245,197,24,0.15);color:var(--yellow);padding:2px 6px;border-radius:4px;margin-top:2px">Pendente</div></div>
+                </div>
+                <div class="mobile-list-item">
+                  <div><div class="mobile-list-name">Pedro M.</div><div style="font-size:10px;color:var(--text-muted)">Marmita × 2</div></div>
+                  <div style="text-align:right"><div class="mobile-list-val">R$ 70</div><div style="font-size:10px;background:rgba(34,197,94,0.15);color:var(--green);padding:2px 6px;border-radius:4px;margin-top:2px">Pago</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clientes tab -->
+        <div class="screen-panel" id="tab-clientes">
+          <div class="mobile-frame-wrapper">
+            <div class="mobile-frame">
+              <div class="mobile-notch"><div class="mobile-notch-bar"></div></div>
+              <div class="mobile-screen">
+                <div class="mobile-header">
+                  <div class="mobile-title">Clientes</div>
+                  <div class="mobile-icon"><i class="fa-solid fa-users"></i></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="width:32px;height:32px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0d0d0f">M</div>
+                      <div><div style="font-size:13px;font-weight:600">Maria Silva</div><div style="font-size:10px;color:var(--text-muted)">12 compras</div></div>
+                    </div>
+                    <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--green)">R$ 840</div><div style="font-size:10px;color:var(--green)">Tudo pago</div></div>
+                  </div>
+                  <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="width:32px;height:32px;border-radius:50%;background:rgba(245,197,24,0.2);border:1px solid rgba(245,197,24,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--yellow)">A</div>
+                      <div><div style="font-size:13px;font-weight:600">Ana Costa</div><div style="font-size:10px;color:var(--text-muted)">8 compras</div></div>
+                    </div>
+                    <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--yellow)">R$ 120</div><div style="font-size:10px;color:var(--yellow)">Deve</div></div>
+                  </div>
+                  <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="width:32px;height:32px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0d0d0f">J</div>
+                      <div><div style="font-size:13px;font-weight:600">João Pereira</div><div style="font-size:10px;color:var(--text-muted)">6 compras</div></div>
+                    </div>
+                    <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--green)">R$ 540</div><div style="font-size:10px;color:var(--green)">Tudo pago</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mobile-frame" style="margin-top:40px">
+              <div class="mobile-notch"><div class="mobile-notch-bar"></div></div>
+              <div class="mobile-screen">
+                <div class="mobile-header">
+                  <div class="mobile-title">Cobranças</div>
+                  <div class="mobile-icon"><i class="fa-solid fa-bell"></i></div>
+                </div>
+                <div style="background:rgba(245,197,24,0.08);border:1px solid rgba(245,197,24,0.2);border-radius:8px;padding:12px;margin-bottom:10px">
+                  <div style="font-size:11px;color:var(--yellow);font-weight:600;margin-bottom:6px"><i class="fa-solid fa-triangle-exclamation"></i> Pendente</div>
+                  <div style="font-size:13px;font-weight:700">Ana Costa deve R$ 120,00</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Salgados × 50 — há 2 dias</div>
+                </div>
+                <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:12px">
+                  <div style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:6px"><i class="fa-solid fa-check-circle"></i> Recebido hoje</div>
+                  <div style="font-size:13px;font-weight:700">Pedro Melo pagou R$ 70,00</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Marmita × 2 — via Pix</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS SECTION ===== -->
+  <section class="stats-section">
+    <div class="container fade-in">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value">3.200+</div>
+          <div class="stat-label">Vendedores ativos</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">R$ 12M+</div>
+          <div class="stat-label">Em vendas registradas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">98%</div>
+          <div class="stat-label">Satisfação dos usuários</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">&lt; 30s</div>
+          <div class="stat-label">Para registrar uma venda</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="testimonials-section">
+    <div class="container">
+      <div class="testimonials-header fade-in">
+        <div class="badge" style="margin-bottom:20px"><i class="fa-solid fa-heart"></i> O que dizem nossos usuários</div>
+        <h2 class="section-title text-center">
+          Quem usou, <span>não larga mais</span>
+        </h2>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "Eu vendia marmita há 3 anos e nunca soube quanto eu realmente ganhava. Com o VendaFácil, descobri que <strong>estava perdendo dinheiro em 2 produtos</strong> e ajustei o preço. No mês seguinte, lucrei 40% a mais."
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">C</div>
+            <div>
+              <div class="testimonial-name">Carla Mendes</div>
+              <div class="testimonial-role">Vendedora de marmitas — SP</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "Antes eu usava caderno e sempre esquecia de cobrar. Perdi muito dinheiro assim. Agora o VendaFácil me avisa quem deve, <strong>recuperei mais de R$ 800 em cobranças</strong> que eu tinha esquecido."
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">R</div>
+            <div>
+              <div class="testimonial-name">Roberto Alves</div>
+              <div class="testimonial-role">Revendedor autônomo — MG</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "Sou doceira e vendo pelo WhatsApp. Esse sistema é perfeito pra mim. <strong>Simples, rápido e funciona no celular.</strong> Em 1 semana já sabia exatamente quanto eu ganhava por produto."
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">F</div>
+            <div>
+              <div class="testimonial-name">Fernanda Lima</div>
+              <div class="testimonial-role">Doceira — RJ</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "Tentei usar planilha, não deu certo. Tentei outros apps, muito complicado. O VendaFácil é o único que <strong>qualquer pessoa consegue usar</strong>. Minha filha de 16 anos me ensinou em 5 minutos."
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">M</div>
+            <div>
+              <div class="testimonial-name">Marcos Souza</div>
+              <div class="testimonial-role">Vendedor de salgados — BA</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "Trabalho com cosméticos por catálogo. Tinha clientes que deviam há meses e eu nem sabia. Agora tenho tudo organizado. <strong>Meu faturamento aumentou 25%</strong> só de organizar o que já tinha."
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">P</div>
+            <div>
+              <div class="testimonial-name">Patrícia Rocha</div>
+              <div class="testimonial-role">Revendedora de cosméticos — RS</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "Uso no celular, no trabalho, em casa. Não precisa instalar nada. <strong>Em 30 segundos registro uma venda</strong> e já aparece no dashboard. Nunca tive tanto controle do meu negócio."
+          </p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">L</div>
+            <div>
+              <div class="testimonial-name">Lucas Ferreira</div>
+              <div class="testimonial-role">Vendedor ambulante — PE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OFFER SECTION ===== -->
+  <section class="offer-section" id="oferta">
+    <div class="offer-inner">
+      <div class="offer-card fade-in">
+        <div class="offer-badge">
+          <i class="fa-solid fa-bolt"></i>
+          Acesso completo
+        </div>
+        <h2 class="offer-title">
+          Tudo que você precisa para<br />conhecer seu <span>lucro real</span>
+        </h2>
+        <p class="offer-desc">
+          Acesse o VendaFácil completo, sem complicação, sem precisar instalar nada. Funciona direto no celular ou computador.
+        </p>
+
+        <div class="offer-features">
+          <div class="offer-feature">
+            <i class="fa-solid fa-check-circle"></i>
+            Dashboard completo com faturamento e lucro real
+          </div>
+          <div class="offer-feature">
+            <i class="fa-solid fa-check-circle"></i>
+            Registro de vendas em menos de 30 segundos
+          </div>
+          <div class="offer-feature">
+            <i class="fa-solid fa-check-circle"></i>
+            Controle de clientes e cobranças pendentes
+          </div>
+          <div class="offer-feature">
+            <i class="fa-solid fa-check-circle"></i>
+            Catálogo de produtos com margem de lucro
+          </div>
+          <div class="offer-feature">
+            <i class="fa-solid fa-check-circle"></i>
+            Relatórios automáticos diários e mensais
+          </div>
+          <div class="offer-feature">
+            <i class="fa-solid fa-check-circle"></i>
+            Acesso pelo celular, tablet ou computador
+          </div>
+          <div class="offer-feature">
+            <i class="fa-solid fa-check-circle"></i>
+            Sem instalar nada — funciona no navegador
+          </div>
+        </div>
+
+        <div class="offer-cta-group">
+          <a href="#preco" class="btn-primary btn-lg btn-full">
+            <i class="fa-solid fa-rocket"></i>
+            Quero ver meu lucro real agora
+          </a>
+          <div class="offer-guarantee">
+            <i class="fa-solid fa-shield-halved"></i>
+            Acesso imediato · Celular e computador · Sem instalação
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ SECTION ===== -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="faq-header fade-in">
+        <div class="badge" style="margin-bottom:20px"><i class="fa-solid fa-circle-question"></i> Dúvidas frequentes</div>
+        <h2 class="section-title text-center">
+          Perguntas que todo<br /><span>mundo faz</span>
+        </h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item fade-in">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Precisa instalar alguma coisa no celular?</span>
+            <div class="faq-icon"><i class="fa-solid fa-plus"></i></div>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Não! O VendaFácil funciona direto no navegador do seu celular — Chrome, Safari, qualquer um. Basta acessar o link, fazer seu cadastro e começar a usar. Sem baixar, sem instalar, sem ocupar espaço no celular.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Funciona no celular mesmo?</span>
+            <div class="faq-icon"><i class="fa-solid fa-plus"></i></div>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Sim, 100%! O VendaFácil foi criado pensando primeiro no celular. Toda a interface é adaptada para telas pequenas, com botões grandes e navegação simples. Você pode usar no celular, tablet ou computador — onde for mais fácil pra você.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Precisa saber usar computador ou planilha?</span>
+            <div class="faq-icon"><i class="fa-solid fa-plus"></i></div>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              De jeito nenhum. O VendaFácil foi feito para quem não tem tempo nem paciência para planilhas complicadas. Se você sabe usar o WhatsApp, você consegue usar o VendaFácil. É simples assim.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Como faço para acessar depois de me cadastrar?</span>
+            <div class="faq-icon"><i class="fa-solid fa-plus"></i></div>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Após o cadastro, você recebe o link de acesso por e-mail. Basta salvar esse link nos favoritos do celular e acessar sempre que quiser. Você também pode adicionar o atalho na tela inicial do celular, como se fosse um aplicativo.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Meus dados ficam salvos com segurança?</span>
+            <div class="faq-icon"><i class="fa-solid fa-plus"></i></div>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Sim. Todas as suas vendas e dados ficam salvos na nuvem com segurança. Você pode trocar de celular, acessar de outro dispositivo e seus dados estarão lá. Nada é perdido.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Para que tipo de vendedor o VendaFácil serve?</span>
+            <div class="faq-icon"><i class="fa-solid fa-plus"></i></div>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Para qualquer pessoa que vende: marmitas, salgados, doces, cosméticos, roupas, produtos por catálogo, serviços, artesanato — qualquer coisa. Se você vende e quer saber quanto está ganhando de verdade, o VendaFácil é pra você.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Posso usar para controlar mais de um produto?</span>
+            <div class="faq-icon"><i class="fa-solid fa-plus"></i></div>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Sim! Você pode cadastrar quantos produtos quiser, com preço de custo e venda de cada um. O sistema calcula automaticamente a margem de lucro de cada produto e mostra quais estão te dando mais retorno.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section class="final-cta">
+    <div class="final-cta-glow"></div>
+    <div class="final-cta-inner">
+      <div class="badge" style="margin-bottom:24px"><i class="fa-solid fa-flag-checkered"></i> Chegou a hora</div>
+      <h2>
+        Chega de vender<br />
+        <span>sem saber o que sobra.</span>
+      </h2>
+      <p>
+        Cada dia sem controle é dinheiro que some sem você perceber. Comece agora, é simples, é rápido e vai mudar a forma como você vê o seu negócio.
+      </p>
+      <div class="final-cta-buttons">
+        <a href="#preco" class="btn-primary btn-lg">
+          <i class="fa-solid fa-rocket"></i>
+          Quero ver meu lucro real agora
+        </a>
+        <a href="#faq" class="btn-secondary btn-lg">
+          <i class="fa-solid fa-circle-question"></i>
+          Ainda tenho dúvidas
+        </a>
+      </div>
+      <div style="margin-top:24px;font-size:14px;color:var(--text-muted)">
+        <i class="fa-solid fa-shield-halved" style="color:var(--green);margin-right:6px"></i>
+        Acesso imediato &nbsp;·&nbsp; Celular e computador &nbsp;·&nbsp; Sem instalação
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="#" class="footer-logo">
+        <div class="footer-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#0d0d0f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="footer-logo-text">Venda<span>Fácil</span></span>
+      </a>
+      <p class="footer-copy">© 2026 VendaFácil. Todos os direitos reservados.</p>
+      <div class="footer-links">
+        <a href="#">Privacidade</a>
+        <a href="#">Termos</a>
+        <a href="#">Contato</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== FLOATING CTA ===== -->
+  <div class="floating-cta" id="floatingCta">
+    <a href="#preco">
+      <i class="fa-solid fa-chart-line"></i>
+      Ver meu lucro
+    </a>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // ===== FADE IN ON SCROLL =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ===== FAQ TOGGLE =====
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // ===== TABS =====
+    function showTab(name) {
+      document.querySelectorAll('.screen-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // ===== FLOATING CTA =====
+    const floatingCta = document.getElementById('floatingCta');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 600) {
+        floatingCta.classList.add('show');
+      } else {
+        floatingCta.classList.remove('show');
+      }
+    });
+
+    // ===== NAVBAR SCROLL =====
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.style.borderBottomColor = 'rgba(245,197,24,0.15)';
+      } else {
+        navbar.style.borderBottomColor = 'var(--border)';
+      }
+    });
+
+    // ===== CHART BAR ANIMATION =====
+    const chartBars = document.querySelectorAll('.chart-bar');
+    const chartObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          chartBars.forEach((bar, i) => {
+            setTimeout(() => {
+              bar.style.transition = 'height 0.6s ease';
+            }, i * 80);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const chartArea = document.querySelector('.dash-chart-area');
+    if (chartArea) chartObserver.observe(chartArea);
+  </script>
+
+</body>
+</html>
