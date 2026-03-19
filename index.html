@@ -907,6 +907,10 @@
 
     /* Tablet (max 768px) */
     @media (max-width: 768px) {
+      /* Navbar — ocultar CTA no mobile/tablet para evitar sobreposição */
+      .navbar-cta { display: none !important; }
+      .navbar-inner { justify-content: flex-start; }
+
       /* Hero */
       .hero { padding: 110px 20px 56px; }
       .hero-headline { font-size: clamp(32px, 8vw, 48px); margin-bottom: 20px; }
@@ -938,8 +942,10 @@
       /* Base */
       body { font-size: 16px; }
 
-      /* Navbar */
-      .navbar-cta { font-size: 12px; padding: 9px 14px; white-space: nowrap; max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+      /* Navbar — ocultar CTA no mobile para evitar sobreposição com o logo */
+      .navbar-cta { display: none !important; }
+      .navbar-inner { justify-content: flex-start; }
+      .navbar-logo { flex: 1; }
 
       /* Hero */
       .hero { padding: 100px 16px 48px; }
@@ -1038,7 +1044,7 @@
     /* Very small screens (max 360px) */
     @media (max-width: 360px) {
       .hero-headline { font-size: 28px; }
-      .navbar-cta { display: none; }
+      .navbar-cta { display: none !important; }
       .price-value { font-size: 72px !important; }
       .mobile-frame { width: 180px; }
       .faq-question { padding: 14px 12px; }
