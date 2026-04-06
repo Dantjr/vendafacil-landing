@@ -1172,16 +1172,26 @@
         esse mês?
       </h1>
 
+      <div class="fade-in" style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <i class="fa-solid fa-star" style="color: var(--yellow);"></i>
+        Usado por mais de 3.200 vendedores · 98% de satisfação
+      </div>
+
       <p class="hero-sub fade-in">
         Descubra seu <strong style="color:var(--yellow)">lucro real</strong> em menos de 1 minuto por dia — direto no celular ou computador.
       </p>
 
-      <div class="hero-cta-group fade-in">
-        <a href="#demo" class="btn-primary btn-lg">
-          <i class="fa-solid fa-play"></i>
-          Ver como funciona
+      <div class="hero-cta-group fade-in" style="flex-direction: column; gap: 12px; margin-bottom: 56px;">
+        <a href="https://pay.hotmart.com/Y105044612P" target="_blank" rel="noopener noreferrer" onclick="fbq('track','InitiateCheckout')" class="btn-primary btn-lg">
+          <i class="fa-solid fa-rocket"></i>
+          Quero descobrir quanto ganho de verdade &rarr;
         </a>
-
+        <div style="font-size: 14px; color: var(--text-muted); text-align: center;">
+          Acesso completo por R$ 47 — pagamento único &middot; <span style="text-decoration: line-through;">De R$ 197</span>
+        </div>
+        <a href="#demo" style="font-size: 14px; color: var(--text-secondary); text-decoration: none; margin-top: 8px; transition: color 0.2s ease;">
+          Como funciona &rarr;
+        </a>
       </div>
 
       <div class="hero-trust fade-in">
@@ -1237,7 +1247,7 @@
             </div>
             <div class="dash-card">
               <div class="dash-card-label">Vendas</div>
-              <div class="dash-card-value white">47</div>
+              <div class="dash-card-value white">97</div>
               <div class="dash-card-change up"><i class="fa-solid fa-arrow-up"></i> +8 esta semana</div>
             </div>
           </div>
@@ -1885,7 +1895,7 @@
         <div class="offer-cta-group">
           <a href="https://pay.hotmart.com/Y105044612P" target="_blank" rel="noopener noreferrer" onclick="fbq('track','InitiateCheckout')" class="btn-primary btn-lg btn-full">
             <i class="fa-solid fa-rocket"></i>
-            Quero ver meu lucro real agora
+            Quero descobrir quanto ganho de verdade &rarr;
           </a>
           <div class="offer-guarantee">
             <i class="fa-solid fa-shield-halved"></i>
@@ -2009,7 +2019,7 @@
       <div class="final-cta-buttons">
         <a href="https://pay.hotmart.com/Y105044612P" target="_blank" rel="noopener noreferrer" onclick="fbq('track','InitiateCheckout')" class="btn-primary btn-lg">
           <i class="fa-solid fa-rocket"></i>
-          Quero ver meu lucro real agora
+          Quero descobrir quanto ganho de verdade &rarr;
         </a>
         <a href="#faq" class="btn-secondary btn-lg">
           <i class="fa-solid fa-circle-question"></i>
@@ -2117,12 +2127,12 @@
         </p>
 
         <div style="margin-bottom:8px;text-align:center">
-          <div class="price-from">De R$&nbsp;197</div>
+          <div class="price-from">De R$&nbsp;97</div>
           <div style="display:flex;align-items:baseline;justify-content:center;gap:4px">
             <span class="price-currency">R$</span>
-            <span class="price-value">97</span>
+            <span class="price-value">47</span>
           </div>
-          <div class="price-installment">ou 12x de R$&nbsp;10,03 no cart&atilde;o *</div>
+          <div class="price-installment">ou 5x de R$&nbsp;10,23 no cart&atilde;o *</div>
           <div class="price-microcopy">
             <i class="fa-solid fa-circle-check"></i>
             Pagamento &uacute;nico &bull; Acesso imediato
@@ -2131,11 +2141,20 @@
 
         <div style="height:1px;background:var(--border);margin:28px 0"></div>
 
-        <div class="offer-cta-group" style="margin-bottom:28px">
+        <div id="urgency-banner" style="background: #fffbeb; color: #b45309; padding: 12px; border-radius: 8px; text-align: center; font-weight: 600; font-size: 14px; margin-bottom: 20px; border: 1px solid #fde68a;">
+          ⏱ Preço de lançamento expira em <span id="countdown">15:00</span>
+        </div>
+
+        <div class="offer-cta-group" style="margin-bottom:16px">
           <a href="https://pay.hotmart.com/Y105044612P" target="_blank" rel="noopener noreferrer" onclick="fbq('track','InitiateCheckout')" class="btn-cta-buy">
             <i class="fa-solid fa-rocket"></i>
-            Quero ver meu lucro real agora
+            Quero descobrir quanto ganho de verdade &rarr;
           </a>
+        </div>
+        
+        <div style="font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 28px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <i class="fa-solid fa-shield-halved" style="color: var(--green);"></i>
+          7 dias de garantia total — se não gostar por qualquer motivo, devolvemos 100% do seu dinheiro. Sem perguntas.
         </div>
 
         <div style="display:flex;flex-direction:column;gap:10px;max-width:400px;margin:0 auto 24px">
@@ -2230,15 +2249,32 @@
       event.target.classList.add('active');
     }
 
-    // ===== FLOATING CTA =====
-    const floatingCta = document.getElementById('floatingCta');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 600) {
-        floatingCta.classList.add('show');
-      } else {
-        floatingCta.classList.remove('show');
-      }
-    });
+    // ===== COUNTDOWN TIMER =====
+    function startCountdown() {
+      let timeInSeconds = 15 * 60; // 15 minutes
+      const countdownElement = document.getElementById('countdown');
+      const bannerElement = document.getElementById('urgency-banner');
+      
+      if (!countdownElement || !bannerElement) return;
+
+      const timer = setInterval(() => {
+        timeInSeconds--;
+        
+        if (timeInSeconds <= 0) {
+          clearInterval(timer);
+          bannerElement.innerHTML = 'Últimas vagas disponíveis';
+          return;
+        }
+        
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        
+        countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }, 1000);
+    }
+    
+    // Start countdown when page loads
+    document.addEventListener('DOMContentLoaded', startCountdown);
 
     // ===== NAVBAR SCROLL =====
     const navbar = document.querySelector('.navbar');
@@ -2258,15 +2294,17 @@
           chartBars.forEach((bar, i) => {
             setTimeout(() => {
               bar.style.transition = 'height 0.6s ease';
-            }, i * 80);
+              bar.style.height = bar.getAttribute('data-height') || '100%';
+            }, i * 100);
           });
         }
       });
     }, { threshold: 0.5 });
 
-    const chartArea = document.querySelector('.dash-chart-area');
-    if (chartArea) chartObserver.observe(chartArea);
+    const chartContainer = document.querySelector('.dash-chart');
+    if (chartContainer) {
+      chartObserver.observe(chartContainer);
+    }
   </script>
-
 </body>
 </html>
